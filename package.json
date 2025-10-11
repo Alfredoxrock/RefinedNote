@@ -48,12 +48,6 @@
         "linux": {
             "target": "AppImage",
             "icon": "assets/AppLogo.png"
-        },
-        "msix": {
-            "displayName": "Notes Desktop App",
-            "publisher": "CN=YourPublisherName",
-            "publisherDisplayName": "Your Publisher",
-            "identityName": "com.notesapp.desktop"
         }
     }
 }
