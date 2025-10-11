@@ -20,29 +20,33 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Restore PFX from secret (base64)
-        if: ${{ secrets.PFX_BASE64 != '' }}
+      - name: Ensure signing secrets exist
         run: |
-          echo Restoring PFX to runner
-          $pfxPath = "${{ github.workspace }}\\build_cert.pfx"
-          [System.IO.File]::WriteAllBytes($pfxPath, [System.Convert]::FromBase64String("${{ secrets.PFX_BASE64 }}"))
-          Write-Output "PFX saved to $pfxPath"
-          echo "::set-output name=pfx::$pfxPath"
+          if (-not $env:PFX_BASE64 -or -not $env:PFX_PASSWORD) {
+            Write-Error "PFX_BASE64 and PFX_PASSWORD repository secrets are required to produce a signed Appx. Add them in GitHub > Settings > Secrets and variables > Actions."
+            exit 1
+          } else {
+            Write-Host "Signing secrets present. Proceeding."
+          }
         shell: powershell
 
-      - name: Configure signing env
-        if: ${{ secrets.PFX_BASE64 != '' }}
+      - name: Restore and expose PFX
         run: |
-          $pfxPath = "${{ github.workspace }}\\build_cert.pfx"
-          echo "Setting CSC_LINK and CSC_KEY_PASSWORD"
-          echo "##[set-env name=CSC_LINK]file:///$pfxPath"
-          echo "##[set-env name=CSC_KEY_PASSWORD]${{ secrets.PFX_PASSWORD }}"
+          # write PFX bytes from base64 secret to a temporary file
+          $pfxPath = Join-Path $env:GITHUB_WORKSPACE 'build_cert.pfx'
+          [System.IO.File]::WriteAllBytes($pfxPath, [System.Convert]::FromBase64String($env:PFX_BASE64))
+
+          # convert to file:/// URL (use forward slashes)
+          $abs = (Resolve-Path $pfxPath).ProviderPath
+          $fileUrl = 'file:///' + ($abs -replace '\\','/')
+
+          # export environment variables for following steps
+          Add-Content -Path $env:GITHUB_ENV -Value "CSC_LINK=$fileUrl"
+          Add-Content -Path $env:GITHUB_ENV -Value "CSC_KEY_PASSWORD=$env:PFX_PASSWORD"
+          Write-Host "Wrote PFX to $pfxPath and exported CSC_LINK/CSC_KEY_PASSWORD to environment."
         shell: powershell
 
       - name: Build signed Appx
-        env:
-          CSC_LINK: ${{ format('file:///{0}', github.workspace) }}\build_cert.pfx
-          CSC_KEY_PASSWORD: ${{ secrets.PFX_PASSWORD }}
         run: npm run build:appx
 
       - name: Upload artifact
