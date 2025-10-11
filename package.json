@@ -1,0 +1,49 @@
+{
+    "name": "notes-desktop-app",
+    "version": "1.0.0",
+    "description": "A modern desktop note-taking application built with Electron",
+    "main": "src/main.js",
+    "scripts": {
+        "start": "electron .",
+        "dev": "electron . --dev",
+        "build": "electron-builder",
+        "dist": "electron-builder --publish=never"
+    },
+    "keywords": [
+        "notes",
+        "desktop",
+        "electron",
+        "productivity"
+    ],
+    "author": "Notes App Developer",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^27.0.0",
+        "electron-builder": "^24.6.4"
+    },
+    "dependencies": {},
+    "build": {
+        "appId": "com.notesapp.desktop",
+        "productName": "Notes Desktop App",
+        "directories": {
+            "output": "dist"
+        },
+        "files": [
+            "src/**/*",
+            "assets/**/*",
+            "package.json"
+        ],
+        "win": {
+            "target": "nsis",
+            "icon": "assets/icon.png"
+        },
+        "mac": {
+            "target": "dmg",
+            "icon": "assets/icon.png"
+        },
+        "linux": {
+            "target": "AppImage",
+            "icon": "assets/icon.png"
+        }
+    }
+}
