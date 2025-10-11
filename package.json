@@ -35,15 +35,15 @@
         ],
         "win": {
             "target": "nsis",
-            "icon": "assets/icon.png"
+            "icon": "assets/AppLogo.png"
         },
         "mac": {
             "target": "dmg",
-            "icon": "assets/icon.png"
+            "icon": "assets/AppLogo.png"
         },
         "linux": {
             "target": "AppImage",
-            "icon": "assets/icon.png"
+            "icon": "assets/AppLogo.png"
         }
     }
 }

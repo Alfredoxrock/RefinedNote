@@ -72,7 +72,7 @@ notes-desktop-app/
 │   ├── styles.css       # Application styles
 │   └── renderer.js      # Renderer process logic
 ├── assets/
-│   └── icon.png         # Application icon (placeholder)
+│   └── AppLogo.png      # Application icon (placeholder)
 ├── package.json         # Project configuration
 └── README.md           # This file
 ```
