@@ -1,5 +1,5 @@
 {
-    "name": "notes-desktop-app",
+    "name": "notesdesktopapp",
     "version": "1.0.0",
     "description": "A modern desktop note-taking application built with Electron",
     "main": "src/main.js",
