@@ -51,8 +51,9 @@
     "appxConfigNote": "To build Appx/MSIX you must provide a signing PFX certificate and have the Windows SDK installed. Set 'publisher' to match your certificate and configure electron-builder 'cscLink' and 'cscKeyPassword' environment variables or fields.",
     "appx": {
         "displayName": "Notes Desktop App",
-        "identityName": "com.notesapp.desktop",
+        "identityName": "ComNotesAppDesktop",
         "publisher": "CN=YourPublisherName",
-        "publisherDisplayName": "Your Publisher"
+        "publisherDisplayName": "Your Publisher",
+        "applicationId": "ComNotesAppDesktop"
     }
 }
