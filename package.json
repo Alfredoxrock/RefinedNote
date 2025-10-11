@@ -8,7 +8,8 @@
         "dev": "electron . --dev",
         "build": "electron-builder",
         "dist": "electron-builder --publish=never",
-        "build:msix": "electron-builder --win msix --publish=never"
+        "build:msix": "electron-builder --win msix --publish=never",
+        "build:appx": "electron-builder --win appx --publish=never"
     },
     "keywords": [
         "notes",
@@ -46,5 +47,12 @@
             "target": "AppImage",
             "icon": "assets/AppLogo.png"
         }
+    },
+    "appxConfigNote": "To build Appx/MSIX you must provide a signing PFX certificate and have the Windows SDK installed. Set 'publisher' to match your certificate and configure electron-builder 'cscLink' and 'cscKeyPassword' environment variables or fields.",
+    "appx": {
+        "displayName": "Notes Desktop App",
+        "identityName": "com.notesapp.desktop",
+        "publisher": "CN=YourPublisherName",
+        "publisherDisplayName": "Your Publisher"
     }
 }
