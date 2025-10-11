@@ -28,7 +28,7 @@
         "appId": "com.notesapp.desktop",
         "productName": "Notes Desktop App",
         "directories": {
-            "output": "dist"
+            "output": "dist_appx"
         },
         "files": [
             "src/**/*",
