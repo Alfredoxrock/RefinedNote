@@ -7,7 +7,8 @@
         "start": "electron .",
         "dev": "electron . --dev",
         "build": "electron-builder",
-        "dist": "electron-builder --publish=never"
+        "dist": "electron-builder --publish=never",
+        "build:msix": "electron-builder --win msix --publish=never"
     },
     "keywords": [
         "notes",
@@ -34,7 +35,10 @@
             "package.json"
         ],
         "win": {
-            "target": "nsis",
+            "target": [
+                "nsis",
+                "msix"
+            ],
             "icon": "assets/AppLogo.png"
         },
         "mac": {
@@ -44,6 +48,12 @@
         "linux": {
             "target": "AppImage",
             "icon": "assets/AppLogo.png"
+        },
+        "msix": {
+            "displayName": "Notes Desktop App",
+            "publisher": "CN=YourPublisherName",
+            "publisherDisplayName": "Your Publisher",
+            "identityName": "com.notesapp.desktop"
         }
     }
 }
