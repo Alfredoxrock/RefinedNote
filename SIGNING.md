@@ -12,7 +12,7 @@ Overview (high level)
 2. Convert or export the certificate to a PFX file that contains the private key and certificate chain.
 3. Keep the PFX secure (do NOT commit to the repo). Use local secure storage or CI secrets.
 4. Provide the PFX and password to electron-builder via environment variables or by setting `build.win.cscLink` / `build.win.cscKeyPassword` in CI.
-5. Run the Appx build: `npm run build:appx` — electron-builder will sign the Appx during the build.
+5. Run the Appx/MSIX build: `npm run build:appx` — electron-builder will sign the Appx or MSIX during the build depending on your target.
 
 Environment variables electron-builder supports
 - CSC_LINK: file path (file://C:/path/to/cert.pfx) or HTTP(s) URL where the PFX can be fetched in CI.
@@ -28,7 +28,7 @@ Local developer flow (recommended for testing)
 $env:CSC_LINK = 'file://C:/keystore/notesapp.pfx'
 $env:CSC_KEY_PASSWORD = 'YOUR_PFX_PASSWORD'
 
-# Build signed Appx
+# Build signed Appx / MSIX
 npm run build:appx
 ```
 

@@ -36,7 +36,10 @@
             "package.json"
         ],
         "win": {
-            "target": "nsis",
+            "target": [
+                "nsis",
+                "msix"
+            ],
             "icon": "assets/AppLogo.png"
         },
         "mac": {
