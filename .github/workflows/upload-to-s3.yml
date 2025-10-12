@@ -1,0 +1,81 @@
+name: Build NSIS and upload ZIP to S3
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Release version (used for file name)'
+        required: false
+        default: '1.0.0'
+
+jobs:
+  build-and-upload:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build NSIS installer
+        run: npm run dist
+
+      - name: Create ZIP of installer
+        shell: powershell
+        run: |
+          $version = '${{ github.event.inputs.version }}'
+          if (-not $version) { $version = '1.0.0' }
+          $exe = Get-ChildItem -Path dist_appx -Filter '*Setup*' -Recurse | Where-Object { $_.Extension -eq '.exe' } | Select-Object -First 1
+          if (-not $exe) { Write-Error 'Installer EXE not found in dist_appx'; exit 1 }
+          $zipPath = "${{ runner.temp }}\notes-installer-$version.zip"
+          Compress-Archive -Path $exe.FullName -DestinationPath $zipPath -Force
+          Write-Output "ZIP_PATH=$zipPath" | Out-File -FilePath $env:GITHUB_ENV -Encoding ASCII -Append
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Create S3 bucket (if missing)
+        shell: powershell
+        env:
+          BUCKET: ${{ secrets.S3_BUCKET_NAME }}
+          REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          try {
+            Write-Output "Creating bucket $env:BUCKET if it does not exist..."
+            if ($env:REGION -eq 'us-east-1') {
+              aws s3api create-bucket --bucket $env:BUCKET --region $env:REGION
+            } else {
+              aws s3api create-bucket --bucket $env:BUCKET --region $env:REGION --create-bucket-configuration LocationConstraint=$env:REGION
+            }
+          } catch {
+            Write-Output "Create-bucket returned: $($_.Exception.Message). Continuing (bucket may already exist)."
+          }
+
+      - name: Upload ZIP to S3 (public-read)
+        shell: powershell
+        env:
+          BUCKET: ${{ secrets.S3_BUCKET_NAME }}
+          VERSION: ${{ github.event.inputs.version }}
+        run: |
+          if (-not $env:VERSION) { $env:VERSION = '1.0.0' }
+          $zip = $env:ZIP_PATH
+          if (-not $zip) { Write-Error 'ZIP_PATH not set'; exit 1 }
+          $key = "releases/Notes-Desktop-App-$env:VERSION.zip"
+          aws s3 cp $zip "s3://$env:BUCKET/$key" --acl public-read
+          $url = "https://$env:BUCKET.s3.amazonaws.com/$key"
+          Write-Output "Uploaded to: $url"
+          Write-Output "S3_URL=$url" | Out-File -FilePath $env:GITHUB_ENV -Encoding ASCII -Append
+
+      - name: Output public S3 URL
+        run: |
+          echo "Public URL: $S3_URL"
