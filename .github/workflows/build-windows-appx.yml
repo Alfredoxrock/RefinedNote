@@ -20,22 +20,16 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Ensure signing secrets exist
-        if: ${{ secrets.PFX_BASE64 && secrets.PFX_PASSWORD }}
-        run: echo "Signing secrets present. Proceeding."
-
-      - name: Fail early if signing secrets missing
-        if: ${{ !secrets.PFX_BASE64 || !secrets.PFX_PASSWORD }}
-        run: |
-          echo "PFX_BASE64 and PFX_PASSWORD repository secrets are required to produce a signed Appx/MSIX."
-          echo "Add them in GitHub > Settings > Secrets and variables > Actions and re-run this workflow."
-          exit 1
-
       - name: Restore and expose PFX
         env:
           PFX_BASE64: ${{ secrets.PFX_BASE64 }}
           PFX_PASSWORD: ${{ secrets.PFX_PASSWORD }}
         run: |
+          if (-not $env:PFX_BASE64 -or -not $env:PFX_PASSWORD) {
+            Write-Error "PFX_BASE64 and PFX_PASSWORD secrets are required"
+            exit 1
+          }
+          
           # write PFX bytes from base64 secret to a temporary file
           $pfxPath = Join-Path $env:GITHUB_WORKSPACE 'build_cert.pfx'
           [System.IO.File]::WriteAllBytes($pfxPath, [System.Convert]::FromBase64String($env:PFX_BASE64))
@@ -50,11 +44,11 @@ jobs:
           Write-Host "Wrote PFX to $pfxPath and exported CSC_LINK/CSC_KEY_PASSWORD to environment."
         shell: powershell
 
-      - name: Build signed MSIX / Appx
+      - name: Build signed MSIX
         run: npm run build:msix
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: appx-artifacts
+          name: msix-artifacts
           path: dist_appx/**
