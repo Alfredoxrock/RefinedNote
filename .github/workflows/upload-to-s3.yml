@@ -44,22 +44,14 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      - name: Create S3 bucket (if missing)
+      - name: Debug S3 vars
         shell: powershell
         env:
           BUCKET: ${{ secrets.S3_BUCKET_NAME }}
           REGION: ${{ secrets.AWS_REGION }}
         run: |
-          try {
-            Write-Output "Creating bucket $env:BUCKET if it does not exist..."
-            if ($env:REGION -eq 'us-east-1') {
-              aws s3api create-bucket --bucket $env:BUCKET --region $env:REGION
-            } else {
-              aws s3api create-bucket --bucket $env:BUCKET --region $env:REGION --create-bucket-configuration LocationConstraint=$env:REGION
-            }
-          } catch {
-            Write-Output "Create-bucket returned: $($_.Exception.Message). Continuing (bucket may already exist)."
-          }
+          Write-Output "DEBUG: BUCKET='$env:BUCKET'"
+          Write-Output "DEBUG: REGION='$env:REGION'"
 
       - name: Upload ZIP to S3 (public-read)
         shell: powershell
@@ -70,8 +62,12 @@ jobs:
           if (-not $env:VERSION) { $env:VERSION = '1.0.0' }
           $zip = $env:ZIP_PATH
           if (-not $zip) { Write-Error 'ZIP_PATH not set'; exit 1 }
+          # compute SHA256 of the ZIP for verification
+          $sha = (Get-FileHash -Path $zip -Algorithm SHA256).Hash
+          Write-Output "ZIP_SHA256=$sha" | Out-File -FilePath $env:GITHUB_ENV -Encoding ASCII -Append
           $key = "releases/Notes-Desktop-App-$env:VERSION.zip"
-          aws s3 cp $zip "s3://$env:BUCKET/$key" --acl public-read
+          # Do not use --acl with bucket-owner-enforced; rely on bucket policy for public-read if desired
+          aws s3 cp $zip "s3://$env:BUCKET/$key"
           $url = "https://$env:BUCKET.s3.amazonaws.com/$key"
           Write-Output "Uploaded to: $url"
           Write-Output "S3_URL=$url" | Out-File -FilePath $env:GITHUB_ENV -Encoding ASCII -Append
@@ -79,3 +75,4 @@ jobs:
       - name: Output public S3 URL
         run: |
           echo "Public URL: $S3_URL"
+          echo "ZIP SHA256: $ZIP_SHA256"

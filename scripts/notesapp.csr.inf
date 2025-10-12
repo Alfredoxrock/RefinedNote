@@ -1,0 +1,22 @@
+[Version]
+Signature="$Windows NT$"
+
+[NewRequest]
+Subject = "CN=Notes Publisher LLC, O=Notes Publisher LLC, OU=Development, L=San Francisco, S=CA, C=US"
+KeySpec = 1
+KeyLength = 2048
+Exportable = TRUE
+MachineKeySet = FALSE
+SMIME = FALSE
+PrivateKeyArchive = FALSE
+UserProtected = FALSE
+UseExistingKeySet = FALSE
+ProviderName = "Microsoft RSA SChannel Cryptographic Provider"
+ProviderType = 12
+RequestType = PKCS10
+HashAlgorithm = SHA256
+
+[Extensions]
+; Subject Alternative Name example (uncomment and edit if needed)
+;2.5.29.17 = "{text}"
+;_continue_ = "DNS=localhost"

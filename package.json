@@ -8,7 +8,6 @@
         "dev": "electron . --dev",
         "build": "electron-builder",
         "dist": "electron-builder --publish=never",
-        "build:msix": "electron-builder --win msix --publish=never",
         "build:appx": "electron-builder --win appx --publish=never"
     },
     "keywords": [
