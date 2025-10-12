@@ -32,7 +32,8 @@ jobs:
 
       - name: List build output for debugging
         run: |
-          echo "Contents of dist_appx:" ; dir -Recurse -Force dist_appx || echo "dist_appx missing"
+          echo "Contents of dist_appx:"
+          if (Test-Path dist_appx) { dir -Recurse -Force dist_appx } else { echo "dist_appx missing" }
         shell: powershell
 
       - name: Upload Appx/MSIX artifact(s)
