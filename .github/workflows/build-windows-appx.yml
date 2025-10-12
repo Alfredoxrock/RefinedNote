@@ -20,35 +20,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Restore and expose PFX
-        env:
-          PFX_BASE64: ${{ secrets.PFX_BASE64 }}
-          PFX_PASSWORD: ${{ secrets.PFX_PASSWORD }}
+      - name: Skip PFX for unsigned build
         run: |
-          if (-not $env:PFX_BASE64 -or -not $env:PFX_PASSWORD) {
-            Write-Error "PFX_BASE64 and PFX_PASSWORD secrets are required"
-            exit 1
-          }
-          
-          # write PFX bytes from base64 secret to a temporary file
-          $pfxPath = Join-Path $env:GITHUB_WORKSPACE 'build_cert.pfx'
-          [System.IO.File]::WriteAllBytes($pfxPath, [System.Convert]::FromBase64String($env:PFX_BASE64))
-
-          # convert to file:/// URL (use forward slashes)
-          $abs = (Resolve-Path $pfxPath).ProviderPath
-          $fileUrl = 'file:///' + ($abs -replace '\\','/')
-
-          # export environment variables for following steps
-          Add-Content -Path $env:GITHUB_ENV -Value "CSC_LINK=$fileUrl"
-          Add-Content -Path $env:GITHUB_ENV -Value "CSC_KEY_PASSWORD=$env:PFX_PASSWORD"
-          Write-Host "Wrote PFX to $pfxPath and exported CSC_LINK/CSC_KEY_PASSWORD to environment."
+          Write-Host "Building unsigned Appx/MSIX for Partner Center submission (Microsoft will sign for Store distribution)."
         shell: powershell
 
-      - name: Build signed MSIX
-        run: npm run build:appx
+      - name: Build Appx / MSIX
+        run: |
+          echo "Running electron-builder (appx)"
+          npm run build:appx
 
-      - name: Upload artifact
+      - name: List build output for debugging
+        run: |
+          echo "Contents of dist_appx:" ; dir -Recurse -Force dist_appx || echo "dist_appx missing"
+        shell: powershell
+
+      - name: Upload Appx/MSIX artifact(s)
         uses: actions/upload-artifact@v4
         with:
-          name: msix-artifacts
-          path: dist_appx/**
+          name: appx-artifacts
+          path: |
+            dist_appx/**/*.appx
+            dist_appx/**/*.msix
+            dist_appx/**/*AppxBundle*.msix
+            dist_appx/**
