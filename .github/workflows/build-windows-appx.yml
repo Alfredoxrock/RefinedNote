@@ -21,14 +21,15 @@ jobs:
         run: npm ci
 
       - name: Ensure signing secrets exist
+        if: ${{ secrets.PFX_BASE64 && secrets.PFX_PASSWORD }}
+        run: echo "Signing secrets present. Proceeding."
+
+      - name: Fail early if signing secrets missing
+        if: ${{ !secrets.PFX_BASE64 || !secrets.PFX_PASSWORD }}
         run: |
-          if (-not $env:PFX_BASE64 -or -not $env:PFX_PASSWORD) {
-            Write-Error "PFX_BASE64 and PFX_PASSWORD repository secrets are required to produce a signed Appx. Add them in GitHub > Settings > Secrets and variables > Actions."
-            exit 1
-          } else {
-            Write-Host "Signing secrets present. Proceeding."
-          }
-        shell: powershell
+          echo "PFX_BASE64 and PFX_PASSWORD repository secrets are required to produce a signed Appx/MSIX."
+          echo "Add them in GitHub > Settings > Secrets and variables > Actions and re-run this workflow."
+          exit 1
 
       - name: Restore and expose PFX
         run: |
