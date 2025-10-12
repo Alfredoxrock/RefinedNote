@@ -1,0 +1,25 @@
+; Example INF for generating CSR for Notes Desktop App
+; Save as notesapp.csr.inf and edit the Subject fields below or use the generate-csr.ps1 helper.
+
+[Version]
+Signature="$Windows NT$"
+
+[NewRequest]
+Subject = "CN=Your Publisher Name, O=Your Organization, OU=Development, L=City, S=State, C=US"
+KeySpec = 1
+KeyLength = 2048
+Exportable = TRUE
+MachineKeySet = FALSE
+SMIME = FALSE
+PrivateKeyArchive = FALSE
+UserProtected = FALSE
+UseExistingKeySet = FALSE
+ProviderName = "Microsoft RSA SChannel Cryptographic Provider"
+ProviderType = 12
+RequestType = PKCS10
+HashAlgorithm = SHA256
+
+[Extensions]
+; To add SAN entries, uncomment and edit below
+;2.5.29.17 = "{text}"
+;_continue_ = "DNS=localhost"
