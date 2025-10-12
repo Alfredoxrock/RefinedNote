@@ -51,3 +51,6 @@ electron-builder.yml
 
 # VS Code workspace storage
 *.code-workspace
+artifacts/
+*.csr
+
