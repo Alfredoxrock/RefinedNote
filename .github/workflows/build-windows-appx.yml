@@ -32,6 +32,9 @@ jobs:
           exit 1
 
       - name: Restore and expose PFX
+        env:
+          PFX_BASE64: ${{ secrets.PFX_BASE64 }}
+          PFX_PASSWORD: ${{ secrets.PFX_PASSWORD }}
         run: |
           # write PFX bytes from base64 secret to a temporary file
           $pfxPath = Join-Path $env:GITHUB_WORKSPACE 'build_cert.pfx'
