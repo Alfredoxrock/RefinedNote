@@ -21,8 +21,10 @@ jobs:
       - name: Build NSIS installer
         run: npm run dist
 
-      - name: Upload installer artifact
+      - name: Upload installer artifact (NSIS and AppX outputs)
         uses: actions/upload-artifact@v4
         with:
           name: nsis-installer
-          path: dist/**
+          path: |
+            dist_appx/**
+            dist/**
