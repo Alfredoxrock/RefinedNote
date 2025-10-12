@@ -38,7 +38,7 @@
         "win": {
             "target": [
                 "nsis",
-                "msix"
+                "appx"
             ],
             "icon": "assets/AppLogo.png"
         },
