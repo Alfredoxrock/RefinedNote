@@ -1,4 +1,4 @@
-; Example INF for generating CSR for Notes Desktop App
+; Example INF for generating CSR for Refined Notes
 ; Save as notesapp.csr.inf and edit the Subject fields below or use the generate-csr.ps1 helper.
 
 [Version]

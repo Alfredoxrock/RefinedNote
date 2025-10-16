@@ -65,7 +65,7 @@ jobs:
           # compute SHA256 of the ZIP for verification
           $sha = (Get-FileHash -Path $zip -Algorithm SHA256).Hash
           Write-Output "ZIP_SHA256=$sha" | Out-File -FilePath $env:GITHUB_ENV -Encoding ASCII -Append
-          $key = "releases/Notes-Desktop-App-$env:VERSION.zip"
+          $key = "releases/Refined-Notes-$env:VERSION.zip"
           # Do not use --acl with bucket-owner-enforced; rely on bucket policy for public-read if desired
           aws s3 cp $zip "s3://$env:BUCKET/$key"
           $url = "https://$env:BUCKET.s3.amazonaws.com/$key"

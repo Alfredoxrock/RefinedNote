@@ -1,4 +1,4 @@
-# Notes Desktop App
+# Refined Notes
 
 A modern, elegant desktop note-taking application built with Electron. Features a clean interface with sidebar navigation, real-time search, and seamless note management.
 
@@ -64,7 +64,7 @@ This will create distributables for your current platform in the `dist` folder.
 ## Project Structure
 
 ```
-notes-desktop-app/
+refined-notes/
 ├── src/
 │   ├── main.js          # Main Electron process
 │   ├── preload.js       # Preload script for security

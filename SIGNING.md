@@ -1,4 +1,4 @@
-# Signing and publishing Notes Desktop App (Appx / MSIX)
+# Signing and publishing Refined Notes (Appx / MSIX)
 
 This document explains how to obtain a code signing certificate (PFX), prepare it, and produce a signed Appx/MSIX package suitable for Microsoft Store / Partner Center uploads.
 

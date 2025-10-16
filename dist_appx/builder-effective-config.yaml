@@ -2,7 +2,7 @@ directories:
   output: dist_appx
   buildResources: build
 appId: com.notesapp.desktop
-productName: Notes Desktop App
+productName: Refined Notes
 files:
   - filter:
       - src/**/*

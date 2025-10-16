@@ -25,7 +25,7 @@
     "dependencies": {},
     "build": {
         "appId": "com.notesapp.desktop",
-        "productName": "Notes Desktop App",
+        "productName": "Refined Notes",
         "directories": {
             "output": "dist_appx"
         },
@@ -52,7 +52,7 @@
     },
     "appxConfigNote": "To build Appx/MSIX you must provide a signing PFX certificate and have the Windows SDK installed. Set 'publisher' to match your certificate and configure electron-builder 'cscLink' and 'cscKeyPassword' environment variables or fields.",
     "appx": {
-        "displayName": "Notes Desktop App",
+        "displayName": "Refined Notes",
         "identityName": "ComNotesAppDesktop",
         "publisher": "CN=YourPublisherName",
         "publisherDisplayName": "Your Publisher",
