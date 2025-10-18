@@ -54,3 +54,31 @@ electron-builder.yml
 artifacts/
 *.csr
 
+# Electron build outputs and installers
+dist_appx/
+*.exe
+*.msix
+*.appx
+*-signed.exe
+*-unpacked/
+
+# Signing and certificates
+*.pfx
+*.pem
+*.p12
+
+# Temporary scripts and debug output that may contain secrets
+scripts/debug-*.ps1
+scripts/*.log
+
+# AWS and credential files
+.aws/
+aws-credentials.txt
+
+# Windows certificate store export
+cert-export-*.pfx
+
+# Local packer / artifact caches
+release/
+out_dir/
+
