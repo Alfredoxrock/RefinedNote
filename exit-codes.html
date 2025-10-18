@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Refined Notes — Installer exit code reference</title>
+    <style>
+        body {
+            font-family: Segoe UI, Arial, Helvetica, sans-serif;
+            max-width: 900px;
+            margin: 32px auto;
+            color: #222
+        }
+
+        h1 {
+            font-size: 1.6rem
+        }
+
+        pre {
+            background: #f7f7f7;
+            padding: 12px;
+            border-radius: 6px;
+            overflow: auto
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Refined Notes — Installer exit code reference</h1>
+    <p><strong>File:</strong> Refined-Notes-1.0.0-x64.exe</p>
+    <p><strong>Published:</strong> 2025-10-17</p>
+
+    <h2>Overview</h2>
+    <p>This page lists the exit/return codes emitted by the Refined Notes Win32 installer and how to interpret them.</p>
+
+    <h3>General rules</h3>
+    <ul>
+        <li><strong>0</strong> — Success. The installer completed successfully.</li>
+        <li><strong>Non-zero</strong> — Failure or special condition. See mapping below for meaning and remediation.
+        </li>
+    </ul>
+
+    <h3>Installer return code mapping</h3>
+    <dl>
+        <dt><strong>Code: 0</strong></dt>
+        <dd><strong>Meaning:</strong> Success — Installation completed.<br><strong>Action:</strong> None required.</dd>
+
+        <dt><strong>Code: 1</strong></dt>
+        <dd><strong>Meaning:</strong> General error — an unexpected error occurred during installation.<br>
+            <strong>Likely causes:</strong> Disk I/O error, corrupt package, or unhandled internal error.<br>
+            <strong>Action:</strong> Check installer logs at %LOCALAPPDATA%\RefinedNotes\installer.log (or the log path
+            provided by the installer), collect verbose logs, and retry installation.
+        </dd>
+
+        <dt><strong>Code: 2</strong></dt>
+        <dd><strong>Meaning:</strong> User canceled.<br>
+            <strong>Likely causes:</strong> User clicked Cancel or closed the installer UI.<br>
+            <strong>Action:</strong> No action required; user-initiated cancellation.
+        </dd>
+
+        <dt><strong>Code: 3</strong></dt>
+        <dd><strong>Meaning:</strong> Insufficient privileges.<br>
+            <strong>Likely causes:</strong> Installer requires elevation but was run without Administrator rights.<br>
+            <strong>Action:</strong> Re-run installer with Administrator privileges (right-click → Run as
+            administrator).
+        </dd>
+
+        <dt><strong>Code: 4</strong></dt>
+        <dd><strong>Meaning:</strong> Upgrade/patch failed.<br>
+            <strong>Likely causes:</strong> Version conflict or previous install in inconsistent state.<br>
+            <strong>Action:</strong> Uninstall previous version and retry, or check installer logs for specific failure
+            details.
+        </dd>
+
+        <dt><strong>Code: 5</strong></dt>
+        <dd><strong>Meaning:</strong> Network download failure (if installer downloads additional payload).<br>
+            <strong>Likely causes:</strong> Network outage, proxy blocking, certificate validation failed.<br>
+            <strong>Action:</strong> Check network connectivity and proxy settings; retry.
+        </dd>
+
+        <dt><strong>Code: 1001</strong></dt>
+        <dd><strong>Meaning:</strong> Failed to acquire lock on application data directory.<br>
+            <strong>Likely causes:</strong> Another instance running or folder locked.<br>
+            <strong>Action:</strong> Close other instances and retry; if persistent, remove the lockfile at
+            %LOCALAPPDATA%\RefinedNotes\lockfile and retry.
+        </dd>
+
+        <dt><strong>Code: 2001</strong></dt>
+        <dd><strong>Meaning:</strong> Invalid installer signature or certificate chain not trusted.<br>
+            <strong>Likely causes:</strong> Package not signed with a CA-trusted certificate.<br>
+            <strong>Action:</strong> Use the signed package from our distribution URL or contact support and provide the
+            installer SHA256.
+        </dd>
+
+    </dl>
+
+    <h3>Contact & support</h3>
+    <p>If Microsoft needs more logs or assistance interpreting a particular failure code, contact our support:</p>
+    <ul>
+        <li>Email: support@refined-notes.example</li>
+        <li>Support docs: https://example.com/refined-notes/support</li>
+    </ul>
+
+    <h3>File SHA256</h3>
+    <pre>2C23470B8DD39BE3DABEA835A2644B26D4936B0460123D9D17F3FA5AF8E637E8</pre>
+
+    <hr>
+    <p>Last updated: 2025-10-17</p>
+</body>
+
+</html>

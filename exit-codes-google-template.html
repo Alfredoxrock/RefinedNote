@@ -1,0 +1,162 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Refined Notes — Installer Return Codes (Google page template)</title>
+    <style>
+        body {
+            font-family: Segoe UI, Roboto, Arial, sans-serif;
+            color: #222;
+            max-width: 960px;
+            margin: 32px auto;
+            padding: 0 20px
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 6px
+        }
+
+        p.lead {
+            color: #444
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left
+        }
+
+        th {
+            background: #f5f7fb
+        }
+
+        td.code {
+            white-space: nowrap;
+            font-family: Menlo, Consolas, monospace;
+            background: #f9f9f9
+        }
+
+        .note {
+            font-size: 0.95rem;
+            color: #555;
+            margin-top: 12px
+        }
+
+        .btn {
+            display: inline-block;
+            background: #0b63d6;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            text-decoration: none
+        }
+
+        pre {
+            background: #f7f7f7;
+            padding: 12px;
+            border-radius: 6px;
+            overflow: auto
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Refined Notes — Installer return codes (template)</h1>
+    <p class="lead">Use this page as a template for Partner Center or a Google Sites/Docs page. Replace or extend the
+        table below with any additional codes your installer emits.</p>
+
+    <h2>Standard install scenarios</h2>
+    <p>Provide EXE return code values for the scenarios mentioned below.</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th style="width:55%">Scenario</th>
+                <th style="width:15%">EXE return code value</th>
+                <th style="width:30%">Notes / Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Installation cancelled by user — The install operation was cancelled by the user.</td>
+                <td class="code">1</td>
+                <td>Action: No action required. User cancelled the install.</td>
+            </tr>
+            <tr>
+                <td>Application already exists — The application already exists on the device.</td>
+                <td class="code">2</td>
+                <td>Action: Inform user or run as upgrade. Check existing installation state.</td>
+            </tr>
+            <tr>
+                <td>Installation already in progress — Another installation is already in progress. User needs to
+                    complete the installation before proceeding with this install.</td>
+                <td class="code">3</td>
+                <td>Action: Ask user to wait until the other installer finishes or reboot and retry.</td>
+            </tr>
+            <tr>
+                <td>Disk space is full — Not enough disk space to complete installation.</td>
+                <td class="code">4</td>
+                <td>Action: Free disk space and retry installation. Provide link to disk cleanup instructions.</td>
+            </tr>
+            <tr>
+                <td>Reboot required — A restart is required to complete the install.</td>
+                <td class="code">5</td>
+                <td>Action: Prompt user to reboot, then re-run installer if necessary.</td>
+            </tr>
+            <tr>
+                <td>Network failure — Network connectivity or download error while fetching payloads.</td>
+                <td class="code">6</td>
+                <td>Action: Verify network connectivity, proxy, and certificates. Retry installation.</td>
+            </tr>
+            <tr>
+                <td>Package rejected during installation — Package rejected due to device security policy (MDM/Policy).
+                </td>
+                <td class="code">7</td>
+                <td>Action: Review device policy, allowlist the package or contact device admin.</td>
+            </tr>
+            <tr>
+                <td>Installation successful — Installation completed successfully.</td>
+                <td class="code">8</td>
+                <td>Action: None required.</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="note">Add more rows for any custom or edge-case return codes your installer uses. For each code include:
+        meaning, likely causes, and exact remediation steps (including log paths).</p>
+
+    <h3>Sample Markdown (copy-paste into Google Docs or GitHub)</h3>
+    <pre>
+Refined Notes — Installer return codes
+
+File: Refined-Notes-1.0.0-x64.exe
+
+| Scenario | EXE return code value | Notes / Action |
+|---|---:|---|
+| Installation cancelled by user | 1 | No action required. |
+| Application already exists | 2 | Inform user or perform upgrade. |
+| Installation already in progress | 3 | Wait for other installer or reboot. |
+| Disk space is full | 4 | Free disk space and retry. |
+| Reboot required | 5 | Prompt user to reboot. |
+| Network failure | 6 | Check network/proxy and retry. |
+| Package rejected by policy | 7 | Check device policy or contact admin. |
+| Installation successful | 8 | Success. |
+
+SHA256: 2C23470B8DD39BE3DABEA835A2644B26D4936B0460123D9D17F3FA5AF8E637E8
+  </pre>
+
+    <p class="note">If you want, I can upload this file to S3 and generate a presigned URL or make it public. Reply
+        <strong>Upload exit-codes</strong> to have me upload and return the URL.</p>
+</body>
+
+</html>
